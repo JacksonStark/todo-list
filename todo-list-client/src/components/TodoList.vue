@@ -37,7 +37,6 @@ export default {
     return {
       todo: "",
       showError: "",
-      retry: false,
       todos: [
         {
           todo: "Go to movie",
@@ -76,35 +75,24 @@ export default {
           console.log({ keywords });
           if (keywords.length === 0) {
             this.showError = "Be more descriptive with your words :)";
-            this.retry = true;
             return;
           }
-          let keyword =
-            this.retry && keywords.length > 1 ? keywords[1] : keywords[0];
+          let keyword = JSON.parse(res)[0]
           console.log({ keyword });
-          this.retry = false;
           fetch(
             // request for relevant visual
             `https://api.unsplash.com/search/photos?client_id=SFK5BeizYJkMY6aiv6ST5EqMJFInZRNR22D7QturUec&query=${keyword}&orientation=squarish`
           )
             .then(res => res.text())
             .then(res => {
-              let results = JSON.parse(res).results;
-
-              if (results.length === 0) {
-                this.retry = true;
-                this.showError = "Hit enter again in 5 seconds :)";
-                return;
-              }
-
-              let imageResult = results[0].urls.small;
+              let imageResult = JSON.parse(res).results[0].urls.small;
               console.log(imageResult);
               // push the newly fetched data to the the todos and reset input
               this.todos.push({ todo: this.todo, image: imageResult });
               this.todo = "";
             });
         })
-        .catch(error => (this.error = error));
+        .catch(error => (console.log(error)));
     },
 
     deleteTodo(index) {
