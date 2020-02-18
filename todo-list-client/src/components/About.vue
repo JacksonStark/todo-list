@@ -16,12 +16,12 @@
     <section class="aws">
       <article>AWS was also utilized:</article>
       <aside>1. Vue.js app -- deployed and live on Heroku.</aside>
-      <aside>2. Lavarel api -- deployed and live on Heroku.</aside>
+      <aside>2. Laravel api -- deployed and live on Heroku.</aside>
     </section>
 
     <section class="sql">
       <article>SQL was integrated:</article>
-      <aside>1. Postgres used with Lavarel.</aside>
+      <aside>1. Postgres used with Laravel.</aside>
       <aside>2. Postico used for accessing database interface.</aside>
     </section>
 

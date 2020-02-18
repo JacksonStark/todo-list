@@ -90,6 +90,7 @@ export default {
               console.log({ imageResult });
               // push the newly fetched data to the the todos and reset input
               this.$store.dispatch("addTodo", {
+                id: this.$store.state.todos[this.$store.state.todos.length - 1].id + 1,
                 todo: this.todo,
                 image_url: imageResult
               });
@@ -100,8 +101,10 @@ export default {
     },
 
     deleteTodo(index, id) {
-      let parsedId = JSON.parse(JSON.stringify(id.id));
-      this.$store.dispatch("deleteTodo", { index, parsedId });
+      console.log(id)
+      // let realId = id.id
+      // let parsedId = JSON.parse(JSON.stringify(id.id));
+      this.$store.dispatch("deleteTodo", { index, id });
     }
   }
 };

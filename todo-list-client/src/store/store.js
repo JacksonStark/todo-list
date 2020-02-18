@@ -42,12 +42,17 @@ export default new Vuex.Store({
     },
 
     addTodo({ commit }, todo) {
-      instance.post(`/todo?todo=${todo.todo}&image_url=${todo.image_url}`);
-      commit("addTodo", todo);
+      instance.post(`/todo?todo=${todo.todo}&image_url=${todo.image_url}`)
+      .then(res => {
+        let committedTodo = todo
+        committedTodo.id = res.data.data.id
+        commit("addTodo", committedTodo);
+      })
     },
 
     deleteTodo({ commit }, todo) {
-      instance.delete(`/todo/${todo.parsedId}`);
+      let realId = JSON.parse(JSON.stringify(todo.id.id));
+      instance.delete(`/todo/${realId}`);
       commit("deleteTodo", todo.index);
     }
   }
