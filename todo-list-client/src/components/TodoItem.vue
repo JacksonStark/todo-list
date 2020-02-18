@@ -3,9 +3,9 @@
     class="item"
     @mouseover="showDelete = true"
     @mouseleave="showDelete = false"
-    v-on:click="deleteTodo(index)"
+    v-on:click="deleteTodo(index, item)"
   >
-    <img class="cover" v-bind:src="item.image" />
+    <img class="cover" v-bind:src="item.image_url" />
     <article>{{ item.todo }}</article>
     <img
       v-show="showDelete"

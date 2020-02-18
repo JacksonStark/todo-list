@@ -20,7 +20,7 @@ class Todo extends JsonResource
         return [
             'id' => $this->id,
             'todo' => $this->todo,
-            'image' => $this->image
+            'image_url' => $this->image_url
         ];
     }
 }

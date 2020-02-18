@@ -14,6 +14,6 @@ $factory->define(App\Todo::class, function (Faker $faker) {
 
     return [
         'todo' => array_random($words),
-        'image' => $faker->imageUrl($width = 540, $height = 540)
+        'image_url' => $faker->imageUrl($width = 540, $height = 540)
     ];
 });

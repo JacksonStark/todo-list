@@ -33,22 +33,24 @@ export default {
     TodoItem
   },
 
+  created: function() {
+    this.$store.dispatch("loadTodos");
+    setTimeout(() => {
+      this.todos = this.$store.getters.getTodos;
+      console.log(
+        "NEW CREATE",
+        JSON.parse(JSON.stringify(this.$store.getters.getTodos))
+      );
+    }, 400);
+    // .then(() => {
+    // })
+  },
+
   data() {
     return {
       todo: "",
       showError: "",
-      todos: [
-        {
-          todo: "Go to movie",
-          image:
-            "https://images.unsplash.com/photo-1518930259200-3e5b29f42096?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjExNTkwNX0"
-        },
-        {
-          todo: "Do laundry",
-          image:
-            "https://images.unsplash.com/photo-1560060141-7b9018741ced?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjExNTkwNX0"
-        }
-      ]
+      todos: this.$store.getters.getTodos
     };
   },
 
@@ -60,6 +62,7 @@ export default {
 
   methods: {
     addTodo() {
+      console.log(this.todos);
       if (this.todo === "") {
         this.showError = "You actually have to type something :)";
         return;
@@ -72,13 +75,11 @@ export default {
         .then(res => res.text())
         .then(res => {
           let keywords = JSON.parse(res);
-          console.log({ keywords });
           if (keywords.length === 0) {
             this.showError = "Be more descriptive with your words :)";
             return;
           }
-          let keyword = JSON.parse(res)[0]
-          console.log({ keyword });
+          let keyword = JSON.parse(res)[0];
           fetch(
             // request for relevant visual
             `https://api.unsplash.com/search/photos?client_id=SFK5BeizYJkMY6aiv6ST5EqMJFInZRNR22D7QturUec&query=${keyword}&orientation=squarish`
@@ -86,17 +87,21 @@ export default {
             .then(res => res.text())
             .then(res => {
               let imageResult = JSON.parse(res).results[0].urls.small;
-              console.log(imageResult);
+              console.log({ imageResult });
               // push the newly fetched data to the the todos and reset input
-              this.todos.push({ todo: this.todo, image: imageResult });
+              this.$store.dispatch("addTodo", {
+                todo: this.todo,
+                image_url: imageResult
+              });
               this.todo = "";
             });
         })
-        .catch(error => (console.log(error)));
+        .catch(error => console.log(error));
     },
 
-    deleteTodo(index) {
-      this.todos.splice(index, 1);
+    deleteTodo(index, id) {
+      let parsedId = JSON.parse(JSON.stringify(id.id));
+      this.$store.dispatch("deleteTodo", { index, parsedId });
     }
   }
 };

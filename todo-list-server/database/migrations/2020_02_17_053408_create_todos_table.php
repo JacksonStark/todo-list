@@ -16,7 +16,7 @@ class CreateTodosTable extends Migration
         Schema::create('todos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('todo');
-            $table->string('image');
+            $table->string('image_url');
             $table->timestamps();
         });
     }
