@@ -22,14 +22,16 @@ body {
   display: flex;
   justify-content: center;
   padding-top: 50px;
-  background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
-  background-size: cover;
-  background-attachment: fixed
-}
-
-body, html {
   margin: 0;
   height: 100%;
+}
+
+html {
+  margin: 0;
+  height: 100%;
+  background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 #app {
