@@ -12,12 +12,17 @@ const instance = axios.create({
 
 export default new Vuex.Store({
   state: {
-    todos: []
+    todos: [],
+    currentTodoIndex: 0
   },
 
   getters: {
     getTodos: state => {
       return state.todos;
+    },
+
+    getCurrentTodoIndex: state => {
+      return state.currentTodoIndex;
     }
   },
 
@@ -33,6 +38,12 @@ export default new Vuex.Store({
 
     deleteTodo(state, index) {
       state.todos.splice(index, 1);
+      state.currentTodoIndex -= 1 
+    },
+
+    renderTodo(state, index) {
+      console.log('in store.js renderTodo mutation.', index)
+      state.currentTodoIndex = index
     }
   },
 
@@ -54,6 +65,10 @@ export default new Vuex.Store({
       let realId = JSON.parse(JSON.stringify(todo.id.id));
       instance.delete(`/todo/${realId}`);
       commit("deleteTodo", todo.index);
+    },
+
+    renderTodo({ commit }, index) {
+      commit("renderTodo", index);
     }
   }
 });

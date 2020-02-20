@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Contracts\Routing\ResponseFactory;
 
 class Todo extends JsonResource
 {
@@ -17,10 +18,16 @@ class Todo extends JsonResource
     {
         // return parent::toArray($request);
 
-        return [
+        return response()->json([
             'id' => $this->id,
             'todo' => $this->todo,
             'image_url' => $this->image_url
-        ];
+        ]);
+
+        // return [
+        //     'id' => $this->id,
+        //     'todo' => $this->todo,
+        //     'image_url' => $this->image_url
+        // ];
     }
 }

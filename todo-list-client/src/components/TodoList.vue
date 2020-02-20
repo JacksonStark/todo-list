@@ -17,7 +17,7 @@
 
     <!-- TODO ITEMS -->
     <ul>
-      <li class="todo-card" v-for="(item, index) in todos" :key="index">
+      <li class="todo-card" v-for="(item, index) in loadedTodos" :key="index">
         <TodoItem v-bind:item="item" v-bind:index="index" v-bind:deleteTodo="deleteTodo" />
       </li>
     </ul>
@@ -33,24 +33,21 @@ export default {
     TodoItem
   },
 
-  created: function() {
+  beforeCreate: function() {
     this.$store.dispatch("loadTodos");
-    setTimeout(() => {
-      this.todos = this.$store.getters.getTodos;
-      console.log(
-        "NEW CREATE",
-        JSON.parse(JSON.stringify(this.$store.getters.getTodos))
-      );
-    }, 400);
-    // .then(() => {
-    // })
+  },
+
+  computed: {
+    loadedTodos: function () {
+      return this.$store.getters.getTodos;
+    }
   },
 
   data() {
     return {
       todo: "",
       showError: "",
-      todos: this.$store.getters.getTodos
+      // todos: this.$store.getters.getTodos
     };
   },
 
@@ -62,7 +59,7 @@ export default {
 
   methods: {
     addTodo() {
-      console.log(this.todos);
+      console.log(this.$store.state.getTodos);
       if (this.todo === "") {
         this.showError = "You actually have to type something :)";
         return;
@@ -102,8 +99,6 @@ export default {
 
     deleteTodo(index, id) {
       console.log(id)
-      // let realId = id.id
-      // let parsedId = JSON.parse(JSON.stringify(id.id));
       this.$store.dispatch("deleteTodo", { index, id });
     }
   }

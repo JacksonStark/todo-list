@@ -1,9 +1,11 @@
 <template>
   <div
     class="item"
+
     @mouseover="showDelete = true"
     @mouseleave="showDelete = false"
     v-on:click="deleteTodo(index, item)"
+    v-show="showTodo"
   >
     <img class="cover" v-bind:src="item.image_url" />
     <article>{{ item.todo }}</article>
@@ -16,18 +18,64 @@
 </template>
 
 <script>
+
 export default {
+
   props: ["item", "index", "deleteTodo"],
   data() {
     return {
-      showDelete: false
+      showDelete: false,
+      showTodo: false
     };
+  },
+
+  created: function() {
+    console.log("created index:", this.index)
+    if (this.index - 1 === this.$store.getters.getCurrentTodoIndex ) {
+      // if previous todo has rendered
+      setTimeout(() => {
+        // update state with this todo's index (with delay for animation)
+        this.$store.dispatch('renderTodo', this.index)
+        this.showTodo = true;
+      }, 400)
+    }
+  },
+  
+  computed: {
+    currentTodo: function () {
+      if (this.index - 1 === this.$store.getters.getCurrentTodoIndex ) {
+        // if previous todo has rendered
+        return this.$store.getters.getCurrentTodoIndex;
+      } else {
+        return false;
+      }
+    }
+  },
+
+  watch: {
+    currentTodo: function(value) {
+      console.log("✅✅✅", this.index)
+      if (value !== false) {
+        // when currentTodo state changes to a new index
+        setTimeout(()=> {
+          // update state with this todo's index (with delay for animation)
+          this.$store.dispatch('renderTodo', this.index)
+          this.showTodo = true;
+        }, 400)
+      }
+    }
   }
+
 };
 </script>
 
 
 <style lang="scss" scoped>
+
+// .item-entrance {
+//   animation: fadeIn ease 5s;
+// }
+
 
 .item {
   display: flex;
@@ -40,7 +88,7 @@ export default {
   border-left: 10px solid #3e9df6;
   margin-top: 55px;
   margin-right: 66px;
-  animation: mover 4s ease-in-out infinite;
+  animation: mover 4s ease-in-out infinite, fadeIn ease 4s;
   max-width: 150px;
   cursor: pointer;
 }
@@ -49,6 +97,15 @@ export default {
   article,
   .cover {
     opacity: 0.25;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
   }
 }
 
